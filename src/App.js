@@ -3,7 +3,6 @@ import './App.css';
 
 
 class App extends Component {
-
   state = {
     posts: [
       {
@@ -24,19 +23,42 @@ class App extends Component {
     ]
   }
 
+  componentDidMount() {
+    this.handleTimeout();
+  }
+
+  componentDidUpdate() {
+    console.log('Atualizou');
+  }
+
+  componentWillUnmount() {
+    console.log('Desmontou');
+  }
+
+  handleTimeout = () => {
+    const { posts } = this.state;
+
+    setTimeout(() => {
+      posts[0].title = 'Titulo 1 alterado';
+
+      this.setState({ posts });
+    }, 2000);
+  }
+
   render() {
     const { posts } = this.state;
 
     return (
-      <div className="App">
+      <div className="App" >
         <h1>Posts</h1>
         {posts.map(post => (
           <div key={post.id}>
             <h1>{post.title}</h1>
             <p>{post.body}</p>
           </div>
-        ))}
-      </div>
+        ))
+        }
+      </div >
     );
   }
 }
