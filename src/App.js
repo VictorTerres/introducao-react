@@ -4,61 +4,58 @@ import './App.css';
 
 class App extends Component {
   state = {
-    posts: [
-      {
-        id: 1,
-        title: 'Titulo 1',
-        body: 'Corpo 1'
-      },
-      {
-        id: 2,
-        title: 'Titulo 2',
-        body: 'Corpo 2'
-      },
-      {
-        id: 3,
-        title: 'Titulo 3',
-        body: 'Corpo 3'
-      }
-    ]
+    posts: []
   }
 
   componentDidMount() {
-    this.handleTimeout();
+    this.fetchPosts();
   }
 
   componentDidUpdate() {
-    console.log('Atualizou');
   }
 
   componentWillUnmount() {
-    console.log('Desmontou');
   }
 
-  handleTimeout = () => {
-    const { posts } = this.state;
+  fetchPosts = async () => {
+    const postsResponse = await fetch('https://jsonplaceholder.typicode.com/posts');
+    const photosResponse = await fetch('https://picsum.photos/v2/list?page1&limit=100');
 
-    setTimeout(() => {
-      posts[0].title = 'Titulo 1 alterado';
+    const postJson = await postsResponse.json();
+    const photosJson = await photosResponse.json();
 
-      this.setState({ posts });
-    }, 2000);
+    const postAndPhotos = postJson.map((post, index) => {
+      return { ...post, cover: photosJson[index] ? photosJson[index].download_url : 'https://picsum.photos/id/0/5000/3333' }
+    });
+
+    this.setState({ posts: postAndPhotos });
   }
 
   render() {
     const { posts } = this.state;
 
     return (
-      <div className="App" >
-        <h1>Posts</h1>
-        {posts.map(post => (
-          <div key={post.id}>
-            <h1>{post.title}</h1>
-            <p>{post.body}</p>
-          </div>
-        ))
-        }
-      </div >
+      <div className="App">
+        <header className="App-header">
+          <h1>Blog Inicial - React</h1>
+        </header>
+        <main>
+          <h2>Posts</h2>
+          <section className="posts-section">
+            {posts.map(post => (
+              <article key={post.id} className="post-card">
+                <img src={post.cover} alt="" />
+                <h3>{post.title}</h3>
+                <p><strong>Author:</strong> User {post.userId}</p>
+                <p>{post.body}</p>
+              </article>
+            ))}
+          </section>
+        </main>
+        <footer className="App-footer">
+          <p>&copy; 2025. All rights reserved.</p>
+        </footer>
+      </div>
     );
   }
 }
