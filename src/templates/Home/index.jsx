@@ -2,6 +2,7 @@ import './styles.css';
 
 import { Component } from "react";
 import { Header } from '../../components/Header';
+import { TextInput } from '../../components/TextInput';
 import { Body } from '../../components/Body';
 import { Button } from '../../components/Button';
 import { fetchPosts } from '../../functions/fetchPosts';
@@ -11,7 +12,8 @@ class Home extends Component {
     posts: [],
     allPosts: [],
     page: 0,
-    postsPerPage: 50
+    postsPerPage: 5,
+    searchValue: ''
   }
 
   async componentDidMount() {
@@ -42,15 +44,27 @@ class Home extends Component {
     this.setState({ posts, page: nextPage });
   }
 
+  handleSearch = (event) => {
+    const { value } = event.target;
+    this.setState({ searchValue: value });
+  }
+
   render() {
-    const { posts, page, postsPerPage, allPosts } = this.state;
+    const { posts, page, postsPerPage, allPosts, searchValue } = this.state;
     const noMorePosts = page + postsPerPage >= allPosts.length;
+
+    const filteredPosts = !!searchValue ? allPosts.filter(post => {
+      return post.title.toLowerCase().includes(searchValue.toLowerCase());
+    }) : posts;
 
     return (
       <div className="App">
         <Header />
-        <Body posts={posts} />
-        <Button text="Load more posts" onClick={this.loadMorePosts} hidden={noMorePosts} />
+        <TextInput searchValue={searchValue} handleSearch={this.handleSearch} />
+        {filteredPosts.length === 0 ? <p className="post-message">Nenhum Post Localizado!</p> : <Body posts={filteredPosts} />}
+        {!searchValue && (
+          <Button text="Load more posts" onClick={this.loadMorePosts} hidden={noMorePosts} />
+        )}
       </div >
     );
   }
