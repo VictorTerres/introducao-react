@@ -1,4 +1,4 @@
-export const fetchPosts = async () => {
+export const loadPosts = async () => {
   const postsResponse = await fetch('https://jsonplaceholder.typicode.com/posts');
   const photosResponse = await fetch('https://picsum.photos/v2/list?page1&limit=100');
 
