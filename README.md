@@ -21,15 +21,15 @@ O objetivo é explorar conceitos básicos, desenvolvendo componentes reutilizáv
 1. **Clone este repositório**:
    ```bash
    git clone https://github.com/VictorTerres/introducao-react
-  ```
+   ```
 2. **Instale as dependências**:
-  ```bash
-  npm install
-  ```
+   ```bash
+   npm install
+   ```
 3. **Inicie o servidor de desenvolvimento**:
-  ```bash
-  npm run dev
-  ```
+   ```bash
+   npm run dev
+   ```
 
 ## Recursos úteis
 
